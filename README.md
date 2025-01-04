@@ -6,7 +6,9 @@ git clone https://github.com/shimseohyun/algorithm-study.git
 
 **2. [로컬] 날짜에 맞는 branch 파기**
 ```
-git checkout -b branch [오늘 날짜 (ex. 240101)]
+git checkout -b branch [이니셜/오늘 날짜 (ex. ssh/240101)]
+
+// 아니면... 포크떠서 작업해도 괜찮아요 브랜치명 안 겹치게만 해주세요
 ```
 
 **3. [로컬 -> git] 작업 올리기**
