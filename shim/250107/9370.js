@@ -188,7 +188,6 @@ const getTartgetMinHeap = (testCase) => {
   const S_H_G = startS[h] + startH[g];
 
   const list = [];
-  testCaseList[testCase].sort((a, b) => a - b);
 
   for (target of testCaseList[testCase][TARGET_LIST]) {
     const S_G_H_T = S_G_H + startH[target];
