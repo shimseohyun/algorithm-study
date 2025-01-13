@@ -33,7 +33,6 @@ function solution(n){
 
         }
        
-
     }
     DFS(0);
     return cnt;
