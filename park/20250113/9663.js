@@ -8,7 +8,7 @@ let cnt = 0;
 const queens = [];
 function solution(n){
     
-    //점과 점사이 거리 > 1 이면서 같은 행에 없다면 놓아도 된다.
+    
     function isQueenPossible(x,y){
         for(const [a,b] of queens){
             //같은 행 또는 같은 열에 있다면 false
