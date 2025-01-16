@@ -7,67 +7,56 @@ const [, A, sign] = require("fs")
 
 const N = A.length;
 
-const getSignsArr = () => {
-  const result = [];
-
-  const findPlace = (signCount, arr) => {
-    if (arr.length === N - 1) {
-      result.push([...arr]);
-    }
-
-    for (let s = 0; s < 4; s++) {
-      if (signCount[s] > 0) {
-        signCount[s]--;
-        arr.push(s);
-        findPlace(signCount, arr);
-        arr.pop();
-        signCount[s]++;
-      }
-    }
-  };
-
-  findPlace(sign, []);
-  return result;
-};
-
-const signsArr = getSignsArr();
 let min = Infinity;
 let max = -Infinity;
 
-for (let signs of signsArr) {
-  let result = A[0];
+const findPlace = (depth, currentNum) => {
+  if (depth === N) {
+    max = Math.max(max, currentNum);
+    min = Math.min(min, currentNum);
+    return;
+  }
 
-  for (let i = 0; i < N - 1; i++) {
-    switch (signs[i]) {
-      case 0:
-        result = result + A[i + 1];
-        break;
-      case 1:
-        result = result - A[i + 1];
-        break;
-      case 2:
-        result = result * A[i + 1];
-        break;
-      case 3:
-        // 나눗셈은 정수 나눗셈으로 몫만 취한다
-        // C++14의 기준을 따른다.
-        // 즉, 양수로 바꾼 뒤 몫을 취하고, 그 몫을 음수로 바꾼 것과 같다.
+  const num = A[depth];
 
-        if (result < 0) {
-          result = Math.ceil(result / A[i + 1]);
-        } else {
-          result = Math.floor(result / A[i + 1]);
-        }
-        break;
+  for (let s = 0; s < 4; s++) {
+    if (sign[s] > 0) {
+      sign[s]--;
+
+      // 연산자를 계산한 뒤
+      // 다음 경우의 수를 찾는다
+      switch (s) {
+        case 0: // 더하기
+          findPlace(depth + 1, currentNum + num);
+          break;
+
+        case 1: // 빼기
+          findPlace(depth + 1, currentNum - num);
+          break;
+
+        case 2: // 곱하기
+          findPlace(depth + 1, currentNum * num);
+          break;
+
+        case 3: // 나누기
+          // 나눗셈은 정수 나눗셈으로 몫만 취한다
+          // C++14의 기준을 따른다.
+          // 즉, 양수로 바꾼 뒤 몫을 취하고, 그 몫을 음수로 바꾼 것과 같다.
+          findPlace(
+            depth + 1,
+            currentNum < 0
+              ? (result = Math.ceil(currentNum / num))
+              : (result = Math.floor(currentNum / num))
+          );
+          break;
+      }
+
+      // 다른 연산자를 삽입하는 경우의 수를 찾기 위해 결과를 복구한다
+      sign[s]++;
     }
   }
+  return;
+};
 
-  if (result > max) {
-    max = result;
-  }
-  if (min > result) {
-    min = result;
-  }
-}
-
+findPlace(1, A[0]);
 console.log(`${max}\n${min}`);
