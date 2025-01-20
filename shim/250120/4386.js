@@ -37,7 +37,7 @@ class Queue {
     }
 
     this.que[0] = this.que.pop();
-    this._heapDown(0);
+    this._heapDown(this.que.length);
 
     return value;
   }
@@ -62,30 +62,29 @@ class Queue {
     }
   }
 
-  _heapDown(index) {
-    let currentIndex = index;
+  _heapDown(length) {
+    let currentIndex = 0;
     const element = this.que[currentIndex];
-    let leftChildIndex, rightChildIndex, smallestIndex;
+    let smallestIndex = currentIndex;
 
     while (true) {
-      leftChildIndex = currentIndex * 2 + 1;
-      rightChildIndex = currentIndex * 2 + 2;
-      smallestIndex = currentIndex;
+      const leftChildIndex = currentIndex * 2 + 1;
+      const rightChildIndex = currentIndex * 2 + 2;
 
       if (
-        leftChildIndex < this.que.length &&
+        leftChildIndex < length &&
         this.que[leftChildIndex][1] < this.que[smallestIndex][1]
       ) {
         smallestIndex = leftChildIndex;
       }
       if (
-        rightChildIndex < this.que.length &&
+        rightChildIndex < length &&
         this.que[rightChildIndex][1] < this.que[smallestIndex][1]
       ) {
         smallestIndex = rightChildIndex;
       }
 
-      if (smallestIndex === currentIndex) break;
+      if (currentIndex == smallestIndex) break;
 
       this.que[currentIndex] = this.que[smallestIndex];
       this.que[smallestIndex] = element;
