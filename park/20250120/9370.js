@@ -35,7 +35,7 @@ class MinHeap{
         return value;
     }
     bubbleUp(){
-        let index = 0;
+        let index = this.heap.length -1;
         let parentIdx = Math.floor((index-1) / 2);
         while(this.heap[parentIdx] && this.heap[index][1] < this.heap[parentIdx][1]){
             this.swap(index, parentIdx);
