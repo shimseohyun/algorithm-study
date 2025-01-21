@@ -1,9 +1,4 @@
-/*
-    10217 - KCM Travel
-    [node, 거리 , 비용] 을 그래프와 우선순위 큐에 삽입하여 다익스트라 알고리즘 구현하여 최단거리 구하기
-    그 과정에서 비용 조건 따지기
 
- */
 const input = require("fs")
     .readFileSync(process.platform === "linux" ? "/dev/stdin" : "algorithm-study/park/20250121/input.txt")
     .toString()
@@ -59,7 +54,7 @@ class MinHeap{
             let parentIdx = Math.floor((index - 1) / 2);
             const parent = this.heap[parentIdx];
 
-            if(current[1] >= parent[1]) break;//목적지,거리,비용이므로[1]
+            if(current[1] >= parent[1]) break;
 
             this.heap[index] = parent;
             index = parentIdx;
