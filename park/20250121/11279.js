@@ -6,56 +6,75 @@ const input = require("fs")
 const n = parseInt(input[0]);
 let index = 1;
 
+
 class MinHeap{
     constructor(){
         this.heap = [];
     }
-    size(){
+
+    getSize(){
         return this.heap.length;
     }
-    push(value){
+    
+    insert(value){
         this.heap.push(value);
-        this.bubbleUp();
+        this.heapifyUp();
     }
-    pop(){
+
+    extractMin(){
         if(this.heap.length === 1) return this.heap.pop();
         const value = this.heap[0];
         this.heap[0] = this.heap.pop();
-        this.bubbleDown();
+        this.heapifyDown();
         return value;
     }
-    swap(index1 , index2){
-        [this.heap[index1] , this.heap[index2]] = [this.heap[index2],this.heap[index1]];
+    swap(idx1,idx2){
+        [this.heap[idx1] , this.heap[idx2]] = [this.heap[idx2] , this.heap[idx1]];
     }
-    bubbleUp(){
+    heapifyUp(){
         let index = this.heap.length - 1;
-        let parentIdx = Math.floor( (index-1) / 2);
-        while( (this.heap[parentIdx] && (this.heap[parentIdx] > this.heap[index]))){
-            this.swap(index,parentIdx);
+        const current = this.heap[index];
+        while(index > 0){
+            let parentIdx = Math.floor((index - 1) / 2);
+            const parent = this.heap[parentIdx];
+
+            if(current[1] >= parent[1]) break;
+
+            this.heap[index] = parent;
             index = parentIdx;
-            parentIdx = Math.floor((index-1)/2);
         }
+        this.heap[index] = current;
     }
-    bubbleDown(){
+
+    heapifyDown(){
         let index = 0;
-        let leftIdx = index * 2 + 1;
-        let rightIdx = index * 2 + 2;
-        while(
-            (this.heap[leftIdx] !== undefined && this.heap[leftIdx] < this.heap[index]) ||
-            (this.heap[rightIdx] !== undefined && this.heap[rightIdx] < this.heap[index])
-          ){
-            let smallerIdx = leftIdx;
-            if(this.heap[rightIdx] !== undefined && this.heap[rightIdx] < this.heap[leftIdx]){
-                smallerIdx = rightIdx;
+        const length = this.heap.length;
+        const current = this.heap[0];
+
+        while(true){
+            const leftIdx = index * 2 + 1;
+            const rightIdx = index * 2 + 2;
+            let smallest = index;
+
+            if(
+                leftIdx < length &&
+                this.heap[leftIdx][1] < this.heap[index][1]
+            ){
+                smallest = leftIdx;
             }
-                
-          
-          this.swap(smallerIdx,index);
-          index = smallerIdx;
-          leftIdx = index * 2 + 1;
-          rightIdx = index * 2 + 2;
+            if(
+                rightIdx < length &&
+                this.heap[rightIdx][1] < this.heap[index][1]
+            ){
+                smallest = rightIdx;
+            }
+            if(smallest === index)  break;
+
+            this.heap[index] = this.heap[smallest];
+            index = smallest;
+        }
+        this.heap[index] = current;
     }
-}
 }
 
 function solution(){
@@ -65,13 +84,13 @@ function solution(){
     for(let i = 0; i < n; i++){
         let x = parseInt(input[index++]);
         if(x === 0){
-            if(minHeap.size() === 0)
+            if(minHeap.getSize() === 0)
                 answer.push(0);
             else
-                answer.push(minHeap.pop());
+                answer.push(minHeap.extractMin());
         }
         else{
-            minHeap.push(x);
+            minHeap.insert(x);
         }
         
     
