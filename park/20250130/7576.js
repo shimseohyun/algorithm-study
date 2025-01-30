@@ -1,6 +1,6 @@
 /*
     7576 - 토마토
-    shift() 이용했다가 시간초과 떠서 변형해서 사용용
+    shift() 이용했다가 시간초과 떠서 변형해서 사용
  */
     const input = require("fs")
     .readFileSync("algorithm-study/park/20250130/input.txt")
